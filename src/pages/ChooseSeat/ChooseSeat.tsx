@@ -2,36 +2,37 @@ import React from 'react';
 import Seat from '../../components/Seat';
 import styled from 'styled-components';
 import Button from '../../components/Button';
+import { useAppSelector } from '../../Reducer/hooks';
+import { ISeat } from './Actions';
 
 interface Props{
 
 }
 
 const SeatsWrap = styled.div`
-    --seat-size: 85px;
+    --seat-size: 90px;
     display: flex;
     justify-content: space-between;
     align-items: space-evenly;
     flex-wrap: wrap;
-    width: 1600px;
-    height: 700px;
+    width: 1630px;
     margin: auto;
-    padding: 60px;
+    padding: 30px;
     gap: 20px;
 `;
 
 const SeatDesc = styled.div`
     display: flex;
     align-items: center;
-    width: 25%;
     gap: 20px;
     font-size: var(--fs-normal);
     height: var(--seat-size);
 `;
 
 const ButtonWrap = styled.div`
-    width: calc(4 * var(--seat-size) + 4 * 18px);
+    width: calc(4 * var(--seat-size) + 3 * 20px);
     height: var(--seat-size);
+	margin-left: auto;
 `;
 
 const Footer = styled.div`
@@ -42,44 +43,42 @@ const Footer = styled.div`
     align-items: end;
 `;
 
-const generateSeats = (): Array<JSX.Element>=> {
+const generateSeats = (seats: Array<ISeat>): Array<JSX.Element>=> {
+	let counter = 0;
 	const res: Array<JSX.Element> = [];
 	for(let i = 0; i < 7; i++){
 		for(let j = 0; j < 15; j++){
-			if(j > 0 && j % 5 === 0){
-				res.push(<Seat type='invisible' clickable={false} />);
+			const tempSeat = seats.find(seat => seat.cors.x === j && seat.cors.y === i);
+			if(tempSeat === undefined){
+				res.push(<Seat key={counter++} type='invisible' clickable={false} />);
 			}
-			else if(i < 3 && j < 2){
-				res.push(<Seat type='invisible' clickable={false} />);
-			}
-			else if(i === 3 && j > 5){
-				res.push(<Seat type='invisible' clickable={false} />);
+			else if(tempSeat?.reserved){
+				res.push(<Seat key={counter++} type='reserved' clickable={false} seat={tempSeat} />);
 			}
 			else{
-				res.push(<Seat type='free' clickable={true} />);   
+				res.push(<Seat key={counter++} type='free' clickable seat={tempSeat} />);   
 			}
 		}
 	}
 	return res;
 };
 
-
 const ChooseSeat: React.FC<Props> = () => {
-
+	const seats: Array<ISeat> = useAppSelector(state => state.seats);
 
 	return (
 		<SeatsWrap>
-			{generateSeats()}
+			{generateSeats(seats)}
 			<Footer>
-				<SeatDesc>
+				<SeatDesc style={{width: '24%',}}>
 					<Seat type='free' clickable={false} />
 					<span>Miejsca dostępne</span>
 				</SeatDesc>
-				<SeatDesc>
+				<SeatDesc style={{width: '26%'}}>
 					<Seat type='reserved' clickable={false} />
 					<span>Miejsca zarezerwowane</span>
 				</SeatDesc>
-				<SeatDesc>
+				<SeatDesc style={{width: '20%',}}>
 					<Seat type='chosen' clickable={false} />
 					<span>Twój wybór</span>
 				</SeatDesc>

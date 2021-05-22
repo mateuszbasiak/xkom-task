@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ISeat } from '../pages/ChooseSeat/Actions';
 
 type seatType = 'free' | 'reserved' | 'chosen' | 'invisible';
 
 interface Props{
     type: seatType;
     clickable: boolean;
+    seat?: ISeat;
 }
 
 const StyledDiv = styled('div')<{ type: seatType, clickable: boolean }>`
@@ -15,10 +17,9 @@ const StyledDiv = styled('div')<{ type: seatType, clickable: boolean }>`
     height: var(--seat-size);
     background: ${props => props.type === 'free' ? 'white' : props.type === 'chosen' ? '#ff8a05' : '#474747'};
     visibility: ${props => props.type === 'invisible' ? 'hidden' : 'visible'};
-    transition: all 150ms ease;
 
     &:hover{
-        ${props => props.clickable ? 'box-shadow: 0 0 0 1px black' : ''};
+        ${props => props.clickable ? 'box-shadow: 0 0 1px 0 black' : ''};
     }
 `;
 

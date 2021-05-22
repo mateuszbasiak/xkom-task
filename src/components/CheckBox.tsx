@@ -21,10 +21,9 @@ const StyledCheckbox = styled.div`
   height: var(--checkbox-size);
   border: 2px solid black;
   border-radius: 3px;
-  transition: all 250ms;
 
   ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 1px black;
+    box-shadow: 0 0 4px 10px black;
   }
 `;
 
@@ -60,7 +59,6 @@ const Checkbox: React.FC<React.HTMLProps<HTMLInputElement>> = () =>  {
 					<polyline points="24 0 12 17 7 12" />
 				</Icon>
 			</StyledCheckbox>
-            
 		</CheckboxContainer>
 	);
 };
