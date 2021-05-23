@@ -4,8 +4,8 @@ import Button from '../../components/Button';
 import Checkbox from '../../components/CheckBox';
 import { useAppDispatch, useAppSelector } from '../../Redux/Store';
 import InputText from '../../components/TextInput';
-import { setMainError, setNumberAndConnected } from './Actions';
-import { routeTo } from '../../Redux/Reducer';
+import { MainPageAction, setMainError, setNumberAndConnected } from './Actions';
+import { RouteAction, routeTo } from '../../Redux/Reducer';
 import { Redirect } from 'react-router';
 
 interface Props{
@@ -62,7 +62,8 @@ const StyledP = styled('p')<{ error: boolean }>`
 
 
 const MainPage: React.FC<Props> = () => {
-	const dispatch = useAppDispatch();
+	const appDispatch = useAppDispatch();
+	const dispatch = (action: MainPageAction | RouteAction) => appDispatch(action);
 	const error = useAppSelector(state => state.mainPage.error);
 	const currPage = useAppSelector(state => state.currPage);
 

@@ -11,7 +11,7 @@ export interface ChooseSeatState{
 const initialState: ChooseSeatState = {
 	error: false,
 	chosenSeats: [],
-	fetchingData: false,
+	fetchingData: true,
 	fetchingError: false,
 	seats: []
 };
@@ -38,20 +38,15 @@ const chooseSeatReducer = (state: ChooseSeatState = initialState, action: Choose
 			...state,
 			seats: action.payload.seats,
 		};
-	case 'FETCHING_SEATS':
+	case 'SET_FETCHING_STATUS':
 		return {
 			...state,
-			fetchingData: true
+			fetchingData: action.payload.status
 		};
 	case 'FETCHING_ERROR':
 		return {
 			...state,
 			fetchingError: true
-		};
-	case 'STOP_FETCHING_STATUS':
-		return {
-			...state,
-			fetchingData: false
 		};
 	default:
 		return state;

@@ -3,9 +3,9 @@ import Seat from '../../components/Seat';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import { useAppDispatch } from '../../Redux/Store';
-import { addChosenSeats, fetchError, fetchingSeats, ISeat, SeatInfo, seatsFetched, StopFetchingStatus } from './Actions';
+import { addChosenSeats, ChooseSeatAction, fetchError, ISeat, SeatInfo, seatsFetched, setFetchingStatus } from './Actions';
 import axios from 'axios';
-import { pageType, routeTo, State } from '../../Redux/Reducer';
+import { pageType, RouteAction, routeTo, State } from '../../Redux/Reducer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import Loading from 'react-loading';
@@ -171,11 +171,12 @@ const chooseInitialSeats = (seats: Array<ISeat>, numSeats: number, connected: bo
 };
 
 const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetchingError, connected, currPage, fetchingData }) => {
-	const dispatch = useAppDispatch();
+	const appDispatch = useAppDispatch();
+	const dispatch = (action: ChooseSeatAction | RouteAction) => appDispatch(action);
 	const diff = numSeats - chosenSeats.length;
 
 	useEffect(() => {
-		dispatch(fetchingSeats());
+		dispatch(setFetchingStatus(true));
 		const fetchSeats = async () => {
 			const response = await axios.get<Array<ISeat>>('http://localhost:3000/seats').then(response => response.data).catch(() => {dispatch(fetchError()); return [] as Array<ISeat>;});
 			if(response){
@@ -196,7 +197,7 @@ const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetc
 			}
 			else{
 				dispatch(addChosenSeats(chosenSeats));
-				dispatch(StopFetchingStatus());
+				dispatch(setFetchingStatus(false));
 			}
 		}
 	}, [seats]);
