@@ -6,7 +6,7 @@ interface Props{
 }
 
 const StyledInput = styled('input')<{error: boolean, type: 'text'}>`
-    width: 175px;
+    width: 165px;
     height: 38px;
     border-radius: 0px;
     background: white;

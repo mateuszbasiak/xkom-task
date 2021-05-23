@@ -1,17 +1,26 @@
 import React from 'react';
 import ChooseSeat from './pages/ChooseSeat/ChooseSeat';
 import MainPage from './pages/MainPage/MainPage';
-import { State } from './Reducer/Reducer';
-import { useAppSelector } from './Reducer/hooks';
+import Summary from './pages/Summary/Summary';
+import { Route, Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 const App: React.FC = () => {
-	const currPage = useAppSelector((state : State) => state.currPage);
-	switch(currPage){
-	case 'ChooseSeat':
-		return <ChooseSeat />;
-	default:
-		return <MainPage />;
-	}
+	return (
+		<BrowserRouter>
+			<Switch>
+				<Route exact path='/chooseseat'>
+					<ChooseSeat />
+				</Route>
+				<Route exact path='/summary'>
+					<Summary />
+				</Route>
+				<Route>
+					<MainPage />
+				</Route>
+			</Switch>
+		</BrowserRouter>
+	);
 };
 
 export default App;

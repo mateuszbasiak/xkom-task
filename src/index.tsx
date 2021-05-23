@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { Action, createStore, ThunkAction } from '@reduxjs/toolkit';
+import { Action, createStore, ThunkAction, applyMiddleware } from '@reduxjs/toolkit';
 import reducer from './Reducer/Reducer';
+import thunk from 'redux-thunk';
 
-export const store = createStore(reducer);
+export const store = createStore(reducer, applyMiddleware(thunk));
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

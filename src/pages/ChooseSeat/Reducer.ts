@@ -1,29 +1,45 @@
-import { useAppSelector } from '../../Reducer/hooks';
-import { ChooseSeatAction, ISeat } from './Actions';
+import { ChooseSeatAction, ISeat, SeatInfo } from './Actions';
 
 export interface ChooseSeatState{
     error: boolean;
-    chosenSeats: Array<ISeat>;
+    chosenSeats: Array<SeatInfo>;
+	fetchingError: boolean,
+	fetchingData: boolean,
+	seats: Array<ISeat>;
 }
 
-export const initialState = (): ChooseSeatState => {
-	return{
-		chosenSeats: useAppSelector(state => state.chosenSeats),
-		error: useAppSelector(state => state.error),
-	};
-};
-
-const ChooseSeatReducer = (state: ChooseSeatState = initialState(), action: ChooseSeatAction): ChooseSeatState => {
+const ChooseSeatReducer = (state: ChooseSeatState, action: ChooseSeatAction): ChooseSeatState => {
 	switch(action.type){
-	case 'SET_CHOSEN_SEATS':
+	case 'ADD_CHOSEN_SEATS':
 		return {
 			...state,
-			chosenSeats: action.payload.chosenSeats,
+			chosenSeats: [...state.chosenSeats, ...action.payload.seats]
+		};
+	case 'DELETE_CHOSEN_SEAT':
+		return{
+			...state,
+			chosenSeats: action.payload.chosenSeats
 		};
 	case 'SET_CHOOSE_SEAT_ERROR':
 		return {
 			...state,
 			error: action.payload.error,
+		};
+	case 'SEATS_FETCHED':
+		return {
+			...state,
+			seats: action.payload.seats,
+			fetchingData: false,
+		};
+	case 'FETCHING_SEATS':
+		return {
+			...state,
+			fetchingData: true
+		};
+	case 'FETCHING_ERROR':
+		return {
+			...state,
+			fetchingError: true
 		};
 	default:
 		return state;

@@ -23,13 +23,12 @@ const StyledCheckbox = styled.div`
   border-radius: 3px;
 
   ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 4px 10px black;
+    box-shadow: 0 0 1px 0 black;
   }
 `;
 
 const CheckboxContainer = styled.div`
-  height: 30px;
-  --checkbox-size: 30px;
+  --checkbox-size: 25px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -37,14 +36,14 @@ const CheckboxContainer = styled.div`
 
 const Icon = styled('svg')<{ checked: boolean }>`
   position: relative;
-  height: 37px;
-  right: 7px;
-  bottom: 5px;
+  height: 32px;
+  right: 6px;
+  bottom: 6px;
   fill: none;
   stroke: black;
   stroke-width: 3px;
-  transition: all 100ms ease;
-  transform: ${props => props.checked ? 'scale(1)' : 'scale(0)'};
+  transition: all 100ms linear;
+  opacity: ${props => props.checked ? '1' : '0'};
 `;
 
 
