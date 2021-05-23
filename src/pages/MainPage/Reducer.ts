@@ -6,7 +6,13 @@ export interface MainPageState{
     numSeats: number;
 }
 
-const MainReducer = (state: MainPageState, action: MainPageAction): MainPageState => {
+export const initialState: MainPageState = {
+	connected: false,
+	error: false,
+	numSeats: 0
+};
+
+const mainReducer = (state: MainPageState = initialState, action: MainPageAction): MainPageState => {
 	switch(action.type){
 	case 'SET_MAIN_ERROR':
 		return {
@@ -24,4 +30,4 @@ const MainReducer = (state: MainPageState, action: MainPageAction): MainPageStat
 	}
 };
 
-export default MainReducer;
+export default mainReducer;

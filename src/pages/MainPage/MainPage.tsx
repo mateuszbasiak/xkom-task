@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import Checkbox from '../../components/CheckBox';
-import { useAppDispatch, useAppSelector } from '../../Reducer/hooks';
+import { useAppDispatch, useAppSelector } from '../../Redux/Store';
 import InputText from '../../components/TextInput';
 import { setMainError, setNumberAndConnected } from './Actions';
-import { routeTo } from '../../Reducer/Reducer';
+import { routeTo } from '../../Redux/Reducer';
 import { Redirect } from 'react-router';
 
 interface Props{
@@ -63,26 +63,37 @@ const StyledP = styled('p')<{ error: boolean }>`
 
 const MainPage: React.FC<Props> = () => {
 	const dispatch = useAppDispatch();
-	const error = useAppSelector(state => state.error);
+	const error = useAppSelector(state => state.mainPage.error);
 	const currPage = useAppSelector(state => state.currPage);
 
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
-		const targets = event.currentTarget as HTMLFormElement;
-		const numSeats = parseInt((targets[0] as HTMLInputElement).value);
+		const targets = (event.currentTarget as HTMLFormElement).elements;
+		const numSeats = parseInt((targets[0] as HTMLInputElement).value.trim());
 		const connected = (targets[1] as HTMLInputElement).checked;   
-		if(!error){
+		if(!error && !isNaN(numSeats)){
 			dispatch(setNumberAndConnected(numSeats, connected));
 			dispatch(routeTo('chooseseat'));
+		}
+		else{
+			dispatch(setMainError(true));
 		}
 	};
 
 	const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-		const parsedNum = parseInt(event.currentTarget.value);
-		if(!error && (isNaN(parsedNum) || parsedNum < 1 || parsedNum > 115)){
+		let good = true;
+		const value = event.currentTarget.value.trim();
+		for(let i = 0; i < value.length; i++){
+			if(value[i] < '0' || value[i] > '9'){
+				good = false;
+				break;
+			}
+		}
+		const parsedNum = parseInt(value);
+		if(!error && (!good || parsedNum < 1 || parsedNum > 115)){
 			dispatch(setMainError(true));
 		}
-		if(error && parsedNum > 0 && parsedNum <= 115){
+		else if(error && good && parsedNum > 0 && parsedNum <= 115){
 			dispatch(setMainError(false));
 		}
 	};

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
-import { pageType, State } from '../../Reducer/Reducer';
+import { pageType, State } from '../../Redux/Reducer';
 import { SeatInfo } from '../ChooseSeat/Actions';
 
 interface Props{
@@ -56,7 +56,7 @@ const Summary: React.FC<Props> = ({ chosenSeats, currPage }) => {
 
 const mapStateToProps = (state: State): Props => {
 	return {
-		chosenSeats: state.chosenSeats,
+		chosenSeats: state.chooseSeat.chosenSeats,
 		currPage: state.currPage
 	};
 };

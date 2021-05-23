@@ -1,7 +1,5 @@
 import { Action } from 'redux';
-
-export const ChooseSeatActionTypes = ['ADD_CHOSEN_SEATS',  'SET_CHOOSE_SEAT_ERROR', 'SEATS_FETCHED', 'DELETE_CHOSEN_SEAT', 'FETCHING_SEATS', 'FETCHING_ERROR'];
-export type ChooseSeatAction = AddChosenSeats | SetChooseError | SeatsFetched | DeleteChosenSeat | FetchingSeats | FetchingError;
+export type ChooseSeatAction = AddChosenSeats | SetChooseError | SeatsFetched | DeleteChosenSeat | FetchingSeats | FetchingError | StopFetchingStatus;
 
 export interface ISeat{
 	id: string;
@@ -16,6 +14,10 @@ export interface SeatInfo{
     x: number;
     y: number;
     id: string;
+}
+
+export interface StopFetchingStatus extends Action{
+	type: 'STOP_FETCHING_STATUS';
 }
 
 export interface FetchingSeats extends Action{
@@ -100,5 +102,11 @@ export const fetchingSeats = (): FetchingSeats => {
 export const fetchError = (): FetchingError => {
 	return {
 		type: 'FETCHING_ERROR',
+	};
+};
+
+export const StopFetchingStatus = (): StopFetchingStatus => {
+	return {
+		type: 'STOP_FETCHING_STATUS',
 	};
 };

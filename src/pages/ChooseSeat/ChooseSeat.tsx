@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import Seat from '../../components/Seat';
 import styled from 'styled-components';
 import Button from '../../components/Button';
-import { useAppDispatch } from '../../Reducer/hooks';
-import { addChosenSeats, fetchError, fetchingSeats, ISeat, SeatInfo, seatsFetched } from './Actions';
+import { useAppDispatch } from '../../Redux/Store';
+import { addChosenSeats, fetchError, fetchingSeats, ISeat, SeatInfo, seatsFetched, StopFetchingStatus } from './Actions';
 import axios from 'axios';
-import { pageType, routeTo, State } from '../../Reducer/Reducer';
+import { pageType, routeTo, State } from '../../Redux/Reducer';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import Loading from 'react-loading';
 
 interface Props{
 	seats: Array<ISeat>;
@@ -74,6 +75,14 @@ const ErrorWrap = styled.div`
 	justify-content: center;
 	display: flex;
 	align-items: center;
+`;
+
+const LoadingWrap = styled.div`
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
 
 const generateSeats = (seats: Array<ISeat>, chosenSeats: Array<SeatInfo>): Array<JSX.Element> => {
@@ -161,7 +170,7 @@ const chooseInitialSeats = (seats: Array<ISeat>, numSeats: number, connected: bo
 	}
 };
 
-const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetchingError, connected, currPage }) => {
+const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetchingError, connected, currPage, fetchingData }) => {
 	const dispatch = useAppDispatch();
 	const diff = numSeats - chosenSeats.length;
 
@@ -180,13 +189,14 @@ const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetc
 	}, []);
 
 	useEffect(() => {
-		if(seats.length > 0){
+		if(seats.length > 0 && chosenSeats.length === 0){
 			const chosenSeats = chooseInitialSeats(seats, numSeats, connected);
 			if(chosenSeats.length === 0){
 				dispatch(fetchError());
 			}
 			else{
 				dispatch(addChosenSeats(chosenSeats));
+				dispatch(StopFetchingStatus());
 			}
 		}
 	}, [seats]);
@@ -195,10 +205,12 @@ const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetc
 		if(currPage === 'mainpage') return <Redirect to='/' />;
 		return <Redirect to={`/${currPage}`} />;
 	}
-
+	
 	if(fetchingError && seats.length > 0) return <ErrorWrap>BŁĄD: Brak wystarczającej ilości wolnych miejsc. Prosimy wybrać mniejszą liczbę miejsc.</ErrorWrap>;
 
 	if(fetchingError && seats.length === 0) return <ErrorWrap>BŁĄD: Prosimy odświeżyć stronę</ErrorWrap>;
+
+	if(fetchingData) return <LoadingWrap><Loading height={100} width={100} type='spin' color='black'/></LoadingWrap>;
 
 	return (
 		<ContentWrap onSubmit={() => dispatch(routeTo('summary'))}>
@@ -226,13 +238,13 @@ const ChooseSeat: React.FC<Props> = ({ seats, numSeats, chosenSeats, error, fetc
 
 const mapStateToProps = (state: State): Props => {
 	return {
-		seats: state.seats,
-		numSeats: state.numSeats,
-		error: state.error,
-		chosenSeats: state.chosenSeats,
-		fetchingError: state.fetchingError,
-		fetchingData: state.fetchingData,
-		connected: state.connected,
+		seats: state.chooseSeat.seats,
+		numSeats: state.mainPage.numSeats,
+		error: state.chooseSeat.error,
+		chosenSeats: state.chooseSeat.chosenSeats,
+		fetchingError: state.chooseSeat.fetchingError,
+		fetchingData: state.chooseSeat.fetchingData,
+		connected: state.mainPage.connected,
 		currPage: state.currPage
 	};
 };

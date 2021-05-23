@@ -1,1 +1,1 @@
-## X-Kom - Internship taks
+## X-Kom - Internship task

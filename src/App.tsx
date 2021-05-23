@@ -2,7 +2,7 @@ import React from 'react';
 import ChooseSeat from './pages/ChooseSeat/ChooseSeat';
 import MainPage from './pages/MainPage/MainPage';
 import Summary from './pages/Summary/Summary';
-import { Route, Switch } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 
 const App: React.FC = () => {
@@ -15,8 +15,11 @@ const App: React.FC = () => {
 				<Route exact path='/summary'>
 					<Summary />
 				</Route>
-				<Route>
+				<Route exact path='/'>
 					<MainPage />
+				</Route>
+				<Route>
+					<Redirect to='/' />
 				</Route>
 			</Switch>
 		</BrowserRouter>

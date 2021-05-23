@@ -8,7 +8,15 @@ export interface ChooseSeatState{
 	seats: Array<ISeat>;
 }
 
-const ChooseSeatReducer = (state: ChooseSeatState, action: ChooseSeatAction): ChooseSeatState => {
+const initialState: ChooseSeatState = {
+	error: false,
+	chosenSeats: [],
+	fetchingData: false,
+	fetchingError: false,
+	seats: []
+};
+
+const chooseSeatReducer = (state: ChooseSeatState = initialState, action: ChooseSeatAction): ChooseSeatState => {
 	switch(action.type){
 	case 'ADD_CHOSEN_SEATS':
 		return {
@@ -29,7 +37,6 @@ const ChooseSeatReducer = (state: ChooseSeatState, action: ChooseSeatAction): Ch
 		return {
 			...state,
 			seats: action.payload.seats,
-			fetchingData: false,
 		};
 	case 'FETCHING_SEATS':
 		return {
@@ -41,9 +48,14 @@ const ChooseSeatReducer = (state: ChooseSeatState, action: ChooseSeatAction): Ch
 			...state,
 			fetchingError: true
 		};
+	case 'STOP_FETCHING_STATUS':
+		return {
+			...state,
+			fetchingData: false
+		};
 	default:
 		return state;
 	}
 };
 
-export default ChooseSeatReducer;
+export default chooseSeatReducer;

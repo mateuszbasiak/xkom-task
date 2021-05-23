@@ -1,6 +1,5 @@
 import { Action } from 'redux';
 
-export const MainPageActionTypes = ['SET_NUMBER_CONNECTED',  'SET_MAIN_ERROR'];
 export type MainPageAction = SetNumberAndConnected | SetMainError;
 
 export interface SetNumberAndConnected extends Action{

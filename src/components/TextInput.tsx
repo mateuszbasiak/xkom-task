@@ -10,7 +10,6 @@ const StyledInput = styled('input')<{error: boolean, type: 'text'}>`
     height: 38px;
     border-radius: 0px;
     background: white;
-
     border: 2px solid black;
     ${props => props.error ? 'outline: 2px solid red' : ''};
     font-size: var(--fs-normal);
@@ -23,7 +22,7 @@ const StyledInput = styled('input')<{error: boolean, type: 'text'}>`
 
 const InputText: React.FC<React.HTMLProps<HTMLInputElement> & Props> = ({ onChange, error }) =>  {
 	return (
-		<StyledInput defaultValue={'1'} error={error} onChange={onChange} type='text' />
+		<StyledInput error={error} name='styled-input' onChange={onChange} type='text' />
 	);
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { addChosenSeats, deleteChosenSeat, SeatInfo, setChooseError } from '../pages/ChooseSeat/Actions';
-import { useAppDispatch, useAppSelector } from '../Reducer/hooks';
+import { useAppDispatch, useAppSelector } from '../Redux/Store';
 
 type seatType = 'free' | 'reserved' | 'chosen' | 'invisible';
 
@@ -28,8 +28,8 @@ const StyledDiv = styled('div')<{ type: seatType, clickable: boolean }>`
 
 const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 	const dispatch = useAppDispatch();
-	const chosenSeats = useAppSelector(state => state.chosenSeats);
-	const numSeats = useAppSelector(state => state.numSeats);
+	const chosenSeats = useAppSelector(state => state.chooseSeat.chosenSeats);
+	const numSeats = useAppSelector(state => state.mainPage.numSeats);
     
 	const handleClick = () =>{
 		if(type === 'chosen' && seatInfo){
