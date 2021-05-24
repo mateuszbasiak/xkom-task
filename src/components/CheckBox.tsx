@@ -3,15 +3,12 @@ import styled from 'styled-components';
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   border: 0;
-  opacity: 0;
-  margin: 0;
+  visibility: hidden;
+  position: absolute;
   overflow: hidden;
   padding: 0;
-  width: var(--checkbox-size);
-  height: var(--checkbox-size);
-  position: absolute;
   white-space: nowrap;
-  z-index: 2;
+  z-index: -1;
 `;
 
 const StyledCheckbox = styled.div`
@@ -21,8 +18,9 @@ const StyledCheckbox = styled.div`
   height: var(--checkbox-size);
   border: 2px solid black;
   border-radius: 3px;
-  ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 1px 0 black;
+
+  &:hover, &:focus {
+    box-shadow: 0 0 2px 0 black;
   }
 `;
 
@@ -35,9 +33,9 @@ const CheckboxContainer = styled.div`
 
 const Icon = styled('svg')<{ checked: boolean }>`
   position: relative;
-  height: 32px;
-  right: 6px;
-  bottom: 6px;
+  height: 31px;
+  right: 5px;
+  bottom: 5px;
   fill: none;
   stroke: black;
   stroke-width: 3px;
@@ -51,8 +49,8 @@ const Checkbox: React.FC<React.HTMLProps<HTMLInputElement>> = () =>  {
 
 	return (
 		<CheckboxContainer>
-			<HiddenCheckbox type='checkbox' onChange={(event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked)} />
-			<StyledCheckbox>
+			<HiddenCheckbox tabIndex={-1} checked={checked} type='checkbox' />
+			<StyledCheckbox tabIndex={0} onClick={() => setChecked(!checked)} onKeyDown={(e) => e.key === ' ' ? setChecked(!checked) : null}>
 				<Icon checked={checked} viewBox="0 0 24 24">
 					<polyline points="24 0 12 17 7 12" />
 				</Icon>
