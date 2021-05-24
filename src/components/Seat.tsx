@@ -33,7 +33,7 @@ const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 	const numSeats = useAppSelector(state => state.mainPage.numSeats);
 	const newClickable = chosenSeats.length < numSeats ? clickable : type === 'chosen' ? clickable : false;
 
-	const handleClick = () =>{
+	const changeTypeOnClick = () => {
 		if(type === 'chosen' && seatInfo){
 			dispatch(deleteChosenSeat(seatInfo, chosenSeats));
 			dispatch(setChooseError(true));
@@ -45,7 +45,12 @@ const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 		}
 	};
 
-	return <StyledDiv type={type} title={newClickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={newClickable} onClick = {() => handleClick()}/>;
+	const handleClick = (event: React.MouseEvent) =>{
+		changeTypeOnClick();
+		(event.currentTarget as HTMLElement).blur();
+	};
+
+	return <StyledDiv type={type} tabIndex={newClickable ? 0 : -1} title={newClickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={newClickable} onKeyDown={(e) => e.key === ' ' ? changeTypeOnClick() : null} onClick = {(event) => handleClick(event)}/>;
 };
 
 export default Seat;
