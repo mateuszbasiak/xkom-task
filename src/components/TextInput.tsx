@@ -11,11 +11,12 @@ const StyledInput = styled('input')<{error: boolean, type: 'text'}>`
     border-radius: 0px;
     background: white;
     border: 2px solid black;
+    outline: none;
     ${props => props.error ? 'outline: 2px solid red' : ''};
     font-size: var(--fs-normal);
 
     &:focus{
-        box-shadow: 0 0 1px 1px black;
+        box-shadow: 0 0 2px 0 black;
     }
 `;
 

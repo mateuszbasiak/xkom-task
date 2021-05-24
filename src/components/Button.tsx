@@ -17,16 +17,17 @@ const StyledButton = styled('button')<{ error: boolean }>`
     transition: all 250ms linear;
     font-size: var(--fs-normal);
     color: black;
+    outline: none;
     ${props => props.error ? 'pointer-events: none' : ''};
     
-    :hover{
+    &:hover, &:focus{
         background: black;
         color: white;
     }
 `;
 
 const Button: React.FC<React.HTMLProps<HTMLButtonElement> & Props> = ({ buttonText, error }) => {
-	return <StyledButton error={error} type={'submit'}>{buttonText}</StyledButton>;
+	return <StyledButton error={error} tabIndex={error ? -1 : 0} type={'submit'}>{buttonText}</StyledButton>;
 };
 
 export default Button;

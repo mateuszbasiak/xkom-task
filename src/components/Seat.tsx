@@ -20,8 +20,9 @@ const StyledDiv = styled('div')<{ type: seatType, clickable: boolean }>`
     visibility: ${props => props.type === 'invisible' ? 'hidden' : 'visible'};
     ${props => props.clickable ? '' : 'pointer-events: none'};
     transition: all 500ms ease;
+	outline: none;
 
-    &:hover{
+    &:hover, &:focus{
         background: rgb(255, 138, 5, 0.5);
     }
 `;
@@ -30,7 +31,8 @@ const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 	const dispatch = useAppDispatch();
 	const chosenSeats = useAppSelector(state => state.chooseSeat.chosenSeats);
 	const numSeats = useAppSelector(state => state.mainPage.numSeats);
-    
+	const newClickable = chosenSeats.length < numSeats ? clickable : type === 'chosen' ? clickable : false;
+
 	const handleClick = () =>{
 		if(type === 'chosen' && seatInfo){
 			dispatch(deleteChosenSeat(seatInfo, chosenSeats));
@@ -43,7 +45,7 @@ const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 		}
 	};
 
-	return <StyledDiv type={type} title={clickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={chosenSeats.length < numSeats ? clickable : type === 'chosen' ? true : false} onClick = {() => handleClick()}/>;
+	return <StyledDiv type={type} tabIndex={newClickable ? 0 : -1} title={newClickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={newClickable} onKeyDown={(e) => e.key === ' ' ? handleClick() : null} onClick = {() => handleClick()}/>;
 };
 
 export default Seat;
