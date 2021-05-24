@@ -47,7 +47,7 @@ const Summary: React.FC<Props> = ({ chosenSeats, currPage }) => {
 			<Title>Twoja rezerwacja przebiegła pomyślnie!</Title>
 			<SeatsWrap>
                 Wybrałeś miejsca:
-				{chosenSeats.map(seat => <Seat key={seat.id}>- rząd {seat.x}, miejsce {seat.y} ({seat.id})</Seat>)}
+				{chosenSeats.sort((a, b) => a.x - b.x).map(seat => <Seat key={seat.id}>- rząd {seat.x}, miejsce {seat.y} ({seat.id})</Seat>)}
 			</SeatsWrap>
 			<Footer>Dziękujemy! W razie problemów prosimy o kontakt z działem administracji.</Footer>
 		</ContentWrap>
