@@ -32,10 +32,9 @@ const CheckboxContainer = styled.div`
 `;
 
 const Icon = styled('svg')<{ checked: boolean }>`
-  position: relative;
+  position: absolute;
   height: 31px;
-  right: 5px;
-  bottom: 5px;
+  left: 10px;
   fill: none;
   stroke: black;
   stroke-width: 3px;
@@ -49,12 +48,11 @@ const Checkbox: React.FC<React.HTMLProps<HTMLInputElement>> = () =>  {
 
 	return (
 		<CheckboxContainer>
-			<HiddenCheckbox tabIndex={-1} checked={checked} type='checkbox' />
-			<StyledCheckbox tabIndex={0} onClick={() => setChecked(!checked)} onKeyDown={(e) => e.key === ' ' ? setChecked(!checked) : null}>
-				<Icon checked={checked} viewBox="0 0 24 24">
-					<polyline points="24 0 12 17 7 12" />
-				</Icon>
-			</StyledCheckbox>
+			<HiddenCheckbox tabIndex={-1} readOnly checked={checked} type='checkbox' />
+			<StyledCheckbox tabIndex={0} onClick={() => setChecked(!checked)} onKeyDown={(e) => e.key === ' ' ? setChecked(!checked) : null} />
+			<Icon checked={checked} viewBox="0 0 24 24">
+				<polyline points="24 0 12 17 7 12" />
+			</Icon>
 		</CheckboxContainer>
 	);
 };
