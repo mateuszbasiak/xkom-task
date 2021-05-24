@@ -40,6 +40,7 @@ const Icon = styled('svg')<{ checked: boolean }>`
   stroke-width: 3px;
   transition: all 100ms linear;
   opacity: ${props => props.checked ? '1' : '0'};
+  z-index: -1;
 `;
 
 
