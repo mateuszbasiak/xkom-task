@@ -45,7 +45,7 @@ const Seat: React.FC<Props> = ({ type, clickable, seatInfo }) => {
 		}
 	};
 
-	return <StyledDiv type={type} tabIndex={newClickable ? 0 : -1} title={newClickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={newClickable} onKeyDown={(e) => e.key === ' ' ? handleClick() : null} onClick = {() => handleClick()}/>;
+	return <StyledDiv type={type} title={newClickable ? type === 'chosen' ? 'Kliknij aby zrezygnować z miejsca' : 'Kliknij aby zarezerwować miejsce' : ''} clickable={newClickable} onMouseDown = {() => handleClick()}/>;
 };
 
 export default Seat;
