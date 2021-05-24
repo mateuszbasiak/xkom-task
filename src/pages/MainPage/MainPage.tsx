@@ -57,6 +57,8 @@ const StyledP = styled('p')<{ error: boolean }>`
     color: red;
     font-size: 0.7rem;
     transition: all 250ms ease;
+	width: 100%;
+	text-align: center;
     opacity: ${props => props.error ? '1' : '0'};
 `;
 
