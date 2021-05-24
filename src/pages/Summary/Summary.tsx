@@ -24,10 +24,11 @@ const Title = styled.div`
 const Footer = styled.div`
     font-size: 2.3rem;
     font-weight: bold;
+	margin-top: 100px;
 `;
 
 const SeatsWrap = styled.div`
-    padding: 80px 0;
+    margin: 70px 0;
 `;
 
 const Seat = styled.div`
